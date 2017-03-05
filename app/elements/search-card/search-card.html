@@ -1,0 +1,98 @@
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/paper-input/paper-input.html">
+<link rel="import" href="..\..\bower_components/iron-ajax/iron-ajax.html">
+<dom-module id="search-card">
+  <template>
+    <style>
+    </style>
+    <div>
+      <paper-input label="{{searchlabel}}" value="{{searchvalue}}">
+      <paper-icon-button suffix icon="search" on-click="FnSearch"></paper-icon-button>
+      </paper-input>
+      <paper-item>{{displaylabel}}</paper-item>
+      <div hidden>
+        <p>{{dbname}}</p><p>{{dbuser}}</p><p>{{dbpass}}</p><p>{{dbhost}}</p><p>{{dbport}}</p>
+        <p>{{tablename}}</p><p>{{conditionvalue}}</p>
+      </div>
+    </div>
+    <iron-ajax        
+        method="{{connectionmethod}}"
+        id="connectionajax"
+        url="{{connectionurl}}"
+        params="{{connectionparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="connectionResponse"
+        debounce-duration="300"
+        >
+    <iron-ajax
+        
+        method="{{searchmethod}}"
+        id="searchajax"
+        url="{{searchurl}}"
+        params="{{searchparam}}"
+        handle-as="json"
+        content-type="application/json"
+        on-response="searchResponse"
+        debounce-duration="300"
+        >
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'search-card',
+      ready:function(){
+        this.connectionmethod="post";
+        var obj={
+          "dbname":this.dbname,
+          "dbuser":this.dbuser,
+          "dbpass":this.dbpass,
+          "dbhost":this.dbhost,
+          "dbport":this.dbport
+        };
+        this.connectionparam=obj;       
+        this.connectionurl="http://localhost:4000/loadconnection";
+        this.$.connectionajax.generateRequest();
+      },
+      FnSearch:function(){
+        // alert('searching');
+        this.searchurl=this.searchurl+"search";
+        var obj={};
+        obj.searchkey=this.searchvalue;
+        obj.tablename=this.tablename;
+        obj.column=this.conditionvalue;
+        this.searchparam=obj;
+        this.$.searchajax.generateRequest();
+      },
+      connectionResponse:function(e){
+        // alert(JSON.stringify(e.detail.response));
+      },
+      searchResponse:function(e){
+        var arr=e.detail.response.returnval;
+        alert(JSON.stringify(arr));
+        if(arr!='no rows')
+          this.displaylabel=arr[0].name;
+        else
+          this.displaylabel="No match found";
+      }
+      // searchResponse:function(e){
+      //   // alert(JSON.stringify(e.detail.response));
+      //   var arr=e.detail.response;
+      //   var f=0;
+      //   for(var i=0;i<arr.length;i++){
+      //     if(arr[i].Id==this.searchvalue){
+      //       f=1;
+      //       this.displaylabel=arr[i].Name;
+      //     }
+      //   }
+      //   if(f==0)
+      //     this.displaylabel="No Match Found!!";
+        
+      // }
+    });
+  })();
+  </script>
+</dom-module>

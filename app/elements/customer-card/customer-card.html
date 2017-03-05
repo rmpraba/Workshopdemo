@@ -1,0 +1,38 @@
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\search-card/search-card.html">
+
+<dom-module id="customer-card">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div>
+      <!-- <search-card searchlabel="Customer search" searchmethod="get" 
+      searchurl="../../config/customer.json" searchparam="" host="localhost" 
+      port="3306" dbname="sample" dbuser="root" dbpass="admin"></search-card> -->
+      <search-card searchlabel="Customer search" searchmethod="post" 
+      searchurl="http://localhost:4000/" dbhost="localhost" 
+      dbport="3306" dbname="sample" dbuser="root" dbpass="admin" tablename="customer" conditionvalue="id"></search-card>
+
+    </div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'customer-card',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'customer-card',
+          notify: true
+        }
+      }
+    });
+  })();
+  </script>
+</dom-module>

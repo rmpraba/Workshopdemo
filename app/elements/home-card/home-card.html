@@ -1,0 +1,42 @@
+
+<link rel="import" href="..\..\bower_components/polymer/polymer.html">
+<link rel="import" href="..\..\bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="..\..\bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="..\..\bower_components/paper-tabs/paper-tab.html">
+
+
+<dom-module id="home-card">
+  <template>
+    <paper-tabs selected="0" scrollable>
+    <paper-tab on-click="FnCustomer">Customer</paper-tab>
+    <paper-tab on-click="FnSupplier">Supplier</paper-tab>
+    <paper-tab on-click="FnItem">Item</paper-tab>
+    </paper-tabs>
+    <iron-pages selected="{{page}}" attr-for-selected="data-category">
+            <section data-category="customer">
+              <customer-card></customer-card>
+            </section>
+            <section data-category="supplier">
+              <supplier-card></supplier-card>
+            </section>
+    </iron-pages>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'home-card',
+      FnCustomer:function(){
+        this.page="customer";
+      },
+      FnSupplier:function(){
+        this.page="supplier";
+      },
+      FnItem:function(){
+
+      }
+    });
+  })();
+  </script>
+</dom-module>
